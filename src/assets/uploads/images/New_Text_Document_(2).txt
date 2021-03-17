@@ -1,0 +1,1022 @@
+<style>
+    .child-subject th {
+        font-size: 12px;
+        font-weight: 100;
+        border-right: 1px solid;
+        border-top: 1px solid;
+        padding-top: 5px;
+    }
+
+    .child-subject th:last-of-type {
+        border-right: none;
+    }
+
+    .child-subject th {}
+
+    .table-bordered th {
+        padding-bottom: 4px;
+    }
+
+    .child-subject {margin-top: 10px;}
+    .child-subject td {
+    text-align: center;
+    border-bottom: 1px solid;
+    border-top: 1px solid;
+}
+.child-subject td {
+    border: 1px solid;
+}
+.child-subject th {
+    font-weight: 600;
+}
+.content-child-subject th {
+    border-left: 1px solid;
+    border-right: 1px solid !important;
+}
+.group-content td,.group-content th {
+    background: #F1F3F4!important;
+}
+.group-content-table td, .group-content-table th {
+    background-color: cornsilk;
+}
+td.conbined {
+    border-top: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: bolder;
+}
+
+
+</style>
+
+
+<div class="box">
+
+    <!-- form start -->
+    <div class="box-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <h5 class="page-header">
+                    <?php
+                    if (permissionChecker('exam')) {
+                        ?>
+                        <a class="btn btn-default" href="<?php echo base_url('result/index') ?>">
+                            <i class="fa fa-plus"></i> 
+                            <?= $this->lang->line('result') ?>
+                        </a>
+                        <?php
+                        if (permissionChecker('exam')) {
+                            ?>
+                            <a class="btn btn-primary"  href="<?php echo base_url('result/result_publish') ?>">
+                                <i class="fa fa-plus"></i> 
+                                <?= $this->lang->line('publish_result') ?>
+                            </a>
+                            <a class="btn btn-primary"  href="<?php echo base_url('result/failedResult') ?>">
+                                <i class="fa fa-plus"></i> 
+                                <?= $this->lang->line('failed_result') ?>
+                            </a>
+                            <?php
+                        }
+                    }
+                    ?>
+
+                </h5>
+                <form class="form-horizontal" role="form" method="post" id="mark_form">
+                    <div class="col-sm-12">
+                        <!-- Class Start -->
+                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 drop-marg">
+                            <?php
+                            $array = array("0" => "Select Class");
+                            if (count($classes)) {
+                                foreach ($classes as $class) {
+                                    $array[$class['classesID']] = $class['classes'];
+                                }
+                            }
+                            echo form_dropdown("classesID", $array, set_value("classesID", $set_classes), "id='classesID' onchange='change_param()' class='form-control' required='required'");
+                            ?>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!-- Class End -->
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 drop-marg">
+                            <?php
+                            $array = array("0" => "Select Shift"); //edit by nazmul
+                            if (count($shifts)) {
+                                foreach ($shifts as $shift) {
+                                    $array[$shift['shiftID']] = $shift['shift_name'];
+                                }
+                            }
+                            echo form_dropdown("shiftID", $array, set_value("shiftID", $set_shift), "id='shiftID' onchange='change_param()' class='form-control'");
+                            ?>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!-- Version Start -->
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 drop-marg">
+                            <?php
+                            $array = array("0" => "Select Version"); //edit by nazmul
+                            if (count($versions)) {
+                                foreach ($versions as $version) {
+                                    $array[$version->versionID] = $version->version_name;
+                                }
+                            }
+                            echo form_dropdown("versionID", $array, set_value("versionID", $set_version), "id='versionID' onchange='change_param()' class='form-control'");
+                            ?>
+                            <div class="clearfix"></div>
+                        </div>
+                        <!-- Version End -->
+                        <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12 drop-marg">
+                            <?php
+                            $array = array(0 => 'Select Section');
+                            if ($sections != "empty") {
+                                foreach ($sections as $section) {
+                                    $array[$section->sectionID] = $section->section;
+                                }
+                            }
+
+                            $sID = 0;
+                            if ($sectionID == 0) {
+                                $sID = 0;
+                            } else {
+                                $sID = $sectionID;
+                            }
+
+                            echo form_dropdown("sectionID", $array, set_value("sectionID", $sID), "id='sectionID' class='form-control'");
+                            ?>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="col-sm-2">
+                            <?php
+                            $array = array('0' => 'Select Group');
+                            foreach ($studentgroup as $group) {
+                                $array[$group['studentgroupID']] = $group['group'];
+                            }
+                            echo form_dropdown("studentgroupID", $array, set_value("studentgroupID", $studentgroupID), "id='studentgroupID' class='form-control'");
+                            ?>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <br>
+                    <div class="col-md-12" style="margin-top: 10px;">
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 drop-marg">
+                            <?php
+                            $array = array('0' => 'Select Terminal Exam');
+                            foreach ($exams as $type) {
+                                $array[$type['terminal_exam_type_id']] = $type['terminal_exam_type'];
+                            }
+                            echo form_dropdown("terminal_exam_id", $array, set_value("terminal_exam_id", $terminal_exam_id), "id='terminal_exam_id' class='form-control' required='required'");
+                            ?>
+                        </div>
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 drop-marg">
+                            <select id='exam_type_id' name="exam_type_id" class='form-control' required='required'>
+                                <option vaule="0">Select Exam Type</option>
+                                <?php
+                                $array = array('0' => 'Select Exam Type');
+                                foreach ($exam_types as $type) {
+                                    ?>
+                                    <option <?php if ($exam_type_id == $type['exam_type_id']) echo 'selected'; ?> value="<?php echo $type['exam_type_id']; ?>" rel="<?php echo $type['is_terminal']; ?>"><?php echo $type['exam_type']; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12 drop-marg" <?php if ($exam_type == 'Terminal') echo 'style="display:none;"'; ?> id="subject_container">
+                            <?php
+                            $array = array('0' => 'Select Subject');
+                            foreach ($subjects as $subject) {
+                                $array[$subject['subjectID']] = $subject['subject'];
+                            }
+                            echo form_dropdown("subjectID", $array, set_value("subjectID", $subectID), "id='subjectID' class='form-control' required='required'");
+                            ?>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-12">
+
+                            <input type="button" onclick="search_exam()" style="width:100%;" class="btn btn-success" value="Enter" >
+                            <input type="hidden" id="examID" name="examID">
+                        </div>
+                        <div class="clearfix"></div>
+
+
+                    </div>
+                    <div class="clearfix"></div>
+
+
+                </form>
+                <div id="exam_list" style="width: 100%; overflow-x: scroll;">
+                    <?php
+                    if (!empty($exam_list_str)) {
+                        echo $exam_list_str;
+                    }
+                    ?>
+                    <?php if (count($students) > 0) { ?>
+                        <button class="btn-cs btn-sm-cs pull-left" onclick="javascript:printDiv('printDiv')"><span class="fa fa-print"></span> Print </button>
+                    <?php } ?>
+                    <div class="col-md-12 print-table" style="width:100%;padding: 0px;" id="printDiv">
+                        <table class="table table-responsive table-bordered sticky-header" style="width: 100%;margin-top:20px;">
+                            <?php if ($exam_type == 'Terminal') { ?>
+                                <tr>
+                                    <th rowspan="2"><?= $this->lang->line('student') ?></th>
+                                    <th style="text-align: center;" colspan="<?php echo count($subjects); ?>"><?= $exam_name; ?></th>
+                                    <!--<th style="text-align: center;" rowspan="2">Performance</th>-->
+
+                                </tr>
+
+                                <tr class="sticky-row">
+                                    <?php
+                                    foreach ($subjects as $subject) {
+                                        if ($subject['is_combined'] > 0) {
+                                            $group_name = $subject['group_name'];
+                                            if ($show_id != $subject['subject_groupId']) {
+                                                $string = "";
+                                                $string .= "<th style='text-align:center;'><b>" . $group_name;
+                                                $string .= "</b><table class='child-subject' width='100%'><tr>";
+                                                foreach ($subject_group_array[$group_name] as $sub) {
+                                                    $string .= "<th style='text-align:center;'>" . $sub['subject'] . "</th>";
+                                                }
+                                                $string .= "</tr></table></th>";
+                                                echo $string;
+
+                                                $show_id = $sub['subject_groupId'];
+                                            }
+                                        } else {
+                                            echo "<th style='text-align:center;'><b>" . $subject['subject'] . "</b></th>";
+                                        }
+                                    }
+                                    ?>
+                                </tr>
+                                    <?php
+                                    $prev = '';
+                                    foreach ($students as $student) {
+                                        if (!empty($student['studentid'])) {
+
+                                            $fail = 0;
+                                            $total = 0;
+                                            $total_point = 0;
+                                            if ($prev != $student['studentname']) {
+                                                ?>
+                                            <tr>
+                                                <td><?php echo $student['studentname']; ?></td>
+                                        <?php } ?>
+                                        <?php //foreach ($student['subjects'] as $sub => $subject) {   ?>
+<!--                                            <td style="text-align: center;" >
+                                                <table class="table table-bordered">
+                                                     <tr>-->
+            <?php
+            $show_id = 0;
+            $string="";
+            foreach ($subjects as $subject) {
+               
+                
+                
+//                if($show_marks_id!=$subject['subject_id'])
+//                {
+//                      foreach ($student_marking_base_exam_type as $key => $value) {
+//                    $exam_type_sett = "exam_" . $value['exam_marking_base_id'];
+//                    $prev='';
+                   
+//                        
+//                    foreach ($student_mark[$exam_type_sett] as  $key=>$exam_marks)  {
+//                        
+////                            if ($subject['subject_id'] == $key) { 
+//                                foreach ($exam_marks as $exam_mark) {
+//                                    if (trim($student['studentid']) == trim($exam_mark['student_id'])) {
+                                         if($subject['is_combined']>0 && $subject['subject_groupId']!=$show_id)
+                                                  {
+                                             $group_grading='';
+                                             $group_grading_point=0;
+//                                                 
+//                                            $string .= "<td><table class='child-subject' width='100%'><tr>";
+//                                            foreach ($student_marking_base_exam_type as $marking_base):
+//
+//                                                $string .= "<th>" . $marking_base['exam_type'] . "</th>";
+//                                            endforeach;
+//                                            $string .= "<th>Total</th></tr><tr>";
+//                                            foreach ($student_marking_base_exam_type as $marking_base) {
+//                                                $et = "exam_" . $marking_base['exam_marking_base_id'];
+//                                                if(array_key_exists($subject['subject_id'], $student_mark[$et])):
+//                                              //  foreach ($student_mark[$et][$subject['subject_id']]['group'][$subject['group_name']][$subject['subject_id']] as $group_mark) {
+//                                              foreach ($student_mark[$et] as $exam_group_marks){
+//                                                  
+//                                                       foreach ($exam_group_marks['group'][$subject['group_name']] as $st_group_mark )
+//                                                       {
+//                                                           foreach ($st_group_mark as $group_mark)
+//                                                           {
+//                                                           if($group_mark['student_id']==$student['studentid']):
+//                                                           if ($marking_base['is_terminal'] == 0):
+//                                                           $string .= "<td>" . number_format($group_mark['group_gotmarks'], 2) . "</td>";
+//                                                           else:
+//                                                           $string .= "<td>" . number_format($group_mark['group_resultmarks'], 2) . "</td>";
+//                                                           endif;
+//                                                           endif; 
+//                                                           }
+//                                                       }
+//                                                   
+//                                                
+//                                                }
+//                                                else:
+//                                                     $string .= "<td>N/A</td>";
+//                                                endif;
+//                                           
+//                                            }
+//                                            $string .= "</tr></table></td>";
+//                                           $show_id=$subject['subject_groupId'];
+                                         $string .= "<td><table width='100%'><tr>";  
+                                         $subject_count=0;
+                                         $group_got_marks['group']=array();
+                                         $group_got_marks['group_markpercent']=array();
+                                         $group_got_marks['count']=array();
+                                         foreach ($student_group_mark[$subject['group_name']] as $student_group_marks)
+                                         { 
+                                             $subject_count++;
+                                             $subject_total=0;
+                                             $subject_other_exam_total=0;
+                                             $subject_term_exammarks=0;
+                                             $subject_term_resultmarks=0;
+                                             $subject_term_markpercent=0;
+                                             $subject_term_finalmark=0;
+                                             $subject_grading='';
+                                             $subject_grading_point=0;
+                                              
+                                               $string.="<td><table class='child-subject content-child-subject group-content-table' width='100%'><tr>";
+                                                foreach ($student_marking_base_exam_type as $marking_base):
+                                                    $string .= "<th>" . $marking_base['exam_type'] . "</th>";
+                                                endforeach;
+                                                $string .= "<th>Total</th><th>GPA</th><th>Grade</th></tr><tr>";
+                                                foreach ($student_marking_base_exam_type as $marking_base) 
+                                                {
+                                                     $et = "exam_" . $marking_base['exam_marking_base_id'];
+                                                     $i=0;//for count no of exam
+                                                     if(count($student_group_marks[$et]))
+                                                     {
+                                                      $et_result_marks=0; //for got exam type marks of a subject   
+                                                      $et_exam_marks=0; //for got exam type marks of a subject   
+                                                      $et_got_marks=0; //for got exam type marks of a subject   
+                                                         foreach ($student_group_marks[$et] as $group_mark)
+                                                         {    
+                                                             // group child section start
+                                                              if($group_mark['student_id']==$student['studentid']):
+                                                                  $i++;
+                                                               if ($marking_base['is_terminal'] == 0):
+                                                                   // if exam is not terminal
+                                                                $string .= "<td>" . number_format($group_mark['got_marks'], 2) . "</td>";
+                                                                $subject_total+= number_format($group_mark['got_marks'], 2);
+                                                                $et_result_marks= number_format($group_mark['got_marks'], 2);
+                                                                $et_got_marks= number_format($group_mark['exam_got_marks'], 2);
+                                                                $et_exam_marks= number_format($group_mark['exam_marks'], 2);
+                                                                if(array_key_exists($et, $group_got_marks['group']))
+                                                                {
+                                                                    //for exam count  and group Mark
+                                                                    $group_got_marks['group'][$et]=$group_got_marks['group'][$et]+$group_mark['got_marks'];
+                                                                    $group_got_marks['group'][$et]=$group_got_marks['count'][$et]+1;
+                                                                }
+                                                                else {
+                                                                        //for exam count  and group Mark
+                                                                    $group_got_marks['group'][$et]=$group_mark['got_marks'];
+                                                                     $group_got_marks['count'][$et]=1;
+                                                                    }
+                                                                
+                                                                $group_got_marks['group_markpercent'][$et]=$group_mark['mark_percent'];
+                                                                $mark_percent+=$group_mark['mark_percent'];
+                                                                $mark_percent+=$group_mark['mark_percent'];
+                                                                else:
+                                                                    //if exam is terminal
+                                                              //  $string .= "<td>" . number_format($group_mark['resultmarks'], 2) . "</td>";
+                                                                 $subject_term_resultmarks=number_format($group_mark['resultmarks'], 2);
+                                                                 $mark_percent+=$group_mark['mark_percent'];
+                                                                 $subject_term_markpercent=$group_mark['mark_percent'];
+                                                                 $group_got_marks['group_markpercent'][$et]=$group_mark['mark_percent'];
+                                                                 $et_result_marks=number_format($group_mark['resultmarks'], 2);
+                                                                 $et_got_marks=number_format($group_mark['exammarks'], 2);
+                                                                 $et_exam_marks=number_format($group_mark['finalmark'], 2);
+                                                                 if(array_key_exists($et, $group_got_marks['group']))
+                                                                {
+                                                                      $group_got_marks['group'][$et]=$group_got_marks['group'][$et]+$group_mark['resultmarks'];
+                                                                      $group_got_marks['count'][$et]= $group_got_marks['count'][$et]+1;
+                                                                }
+                                                                else {
+                                                                     $group_got_marks['group'][$et]=$group_mark['resultmarks'];
+                                                                     $group_got_marks['count'][$et]=1;
+                                                                     }
+                                                                 
+                                                                endif;
+                                                               ?>
+                                            <input type="hidden" class="mform-data" data-type="exam_marks"  data-student="<?=$student['studentid'] ?>" data-subject="<?=$subject['subject_id']?>" data-etype="<?= $et ?>" value="<?= $et_exam_marks ?>">
+                                            <input type="hidden" class="mform-data" data-type="exam_got_marks"  data-student="<?=$student['studentid'] ?>" data-subject="<?=$subject['subject_id']?>" data-etype="<?= $et ?>" value="<?= $et_got_marks ?>">
+                                            <input type="hidden" class="mform-data" data-type="exam_calculated_marks"  data-student="<?=$student['studentid'] ?>" data-subject="<?=$subject['subject_id']?>" data-etype="<?= $et ?>" value="<?= $et_result_marks ?>">
+                                               
+                                                <?php
+                                                              endif;
+                                                         }
+                                                      
+                                                     }
+                                                     else {
+                                                          $string .= "<td>N/A</td>";
+                                                     }
+                                                   
+                                                     
+                                                }
+                                                if($mark_percent<100)
+                                                {
+                                                   $remain_mark_percent=100-$mark_percent;
+                                                   $new_percent= $subject_term_markpercent+$remain_mark_percent;
+                                                   $subject_term_resultmarks=$new_percent*$subject_term_resultmarks/$subject_term_markpercent;
+                                                   $string.="<td>".$subject_term_resultmarks."</td>";
+                                                  // $group_got_marks['group'][$et]=$subject_term_resultmarks;
+                                                   $subject_total+=$subject_term_resultmarks;
+                                                }
+                                                 else {
+                                                      $string.="<td>".$subject_term_resultmarks."</td>";
+                                                      $subject_total+=$subject_term_resultmarks;
+                                                      }
+                                                   
+                                                $string.="<td>".$subject_total."</td>";
+                                                 foreach ($grade_setup as $grades)
+                                                   {
+                                                       if($subject_total>=$grades['min_mark']&&$subject_total<=$grades['max_mark'])
+                                                       {
+                                                           $subject_grading=$grades['grading'];
+                                                           $subject_grading_point=$grades['grade_point'];
+                                                       }
+                                                   }
+                                                   $string.="<td>".$subject_grading."</td>";
+                                                   $string.="<td>".$subject_grading_point."</td>";
+                                                $string .= "</tr></table></td>";
+                                                
+                                                ?>
+                                                   
+                                                 <input type="hidden" class="rform-data" data-type="total" data-student="<?= $student['studentid'] ?>" data-subject="<?= $subject['subject_id'] ?>" value="<?php echo $subject_total; ?>">
+                                                 <input type="hidden" class="rform-data" data-type="grade_point" data-student="<?= $student['studentid'] ?>" data-subject="<?= $subject['subject_id'] ?>" value="<?php echo $subject_grading_point; ?>">
+                                                 <input type="hidden" class="rform-data" data-type="grade" data-student="<?= $student['studentid'] ?>" data-subject="<?= $subject['subject_id'] ?>" value="<?php echo $subject_grading; ?>">
+                                              
+                                                <?php
+                                            } 
+                                            
+                                             $string .= "</tr><tr><td colspan='".$subject_count."' class='text-center conbined'>Combined</td></tr><tr><td colspan='".$subject_count."'><table class='child-subject content-child-subject group-content' width='100%'><tr>";
+                                                
+                                             foreach ($student_marking_base_exam_type as $marking_base):
+                                                    $string .= "<th>" . $marking_base['exam_type'] . "</th>";
+                                                endforeach;
+                                           $string .= "<th>Total</th><th>GPA</th><th>Grade</th></tr><tr>";  
+                                           $group_total=0;
+                                           $group_mark_percent=0;
+                                           $group_resultmarks=0;
+                                           foreach ($student_marking_base_exam_type as $marking_base)
+                                           {
+                                            //for group marks display.   
+                                               $et = "exam_" . $marking_base['exam_marking_base_id'];
+                                               if(count($group_got_marks['count'][$et]))
+                                               {
+                                               if($marking_base['is_terminal']==0):
+                                                  
+                                                 $mark=$group_got_marks['group'][$et]/$group_got_marks['count'][$et];
+                                                $string.="<td>".$mark."</td>";
+                                                $group_total+=$mark;
+                                                $group_mark_percent+=$group_got_marks['group_markpercent'][$et];
+                                                else:
+                                                       $mark=$group_got_marks['group'][$et]/$group_got_marks['count'][$et];
+                                                       $group_resultmarks=$mark;
+                                                       $group_mark_percent+=$group_got_marks['group_markpercent'][$et];
+                                                  
+                                               endif;
+                                               }
+                                               else
+                                               {
+                                                   $string.="<td>N/A</td>";
+                                               }
+                                            }
+                                                 if($group_mark_percent<100):
+                                                     //for calculate markpercent
+                                                   $remain_mark_percent=100-$group_mark_percent;
+                                                   $new_percent= $subject_term_markpercent+$remain_mark_percent;
+                                                   $group_resultmarks=$new_percent*$group_resultmarks/$subject_term_markpercent;
+                                                   $group_total+=$group_resultmarks;
+                                                   else:
+                                                        $group_total+=$group_resultmarks;
+                                                   endif;
+                                                   
+                                             foreach ($grade_setup as $grades)
+                                                   {
+                                                       if($group_total>=$grades['min_mark']&&$group_total<=$grades['max_mark'])
+                                                       {
+                                                           $group_grading=$grades['grading'];
+                                                           $group_grade_point=$grades['grade_point'];
+                                                       }
+                                                   }   
+                                            $string.="<td>".$group_resultmarks."</td>";
+                                            $string.="<td>".$group_total."</td>";
+                                            $string.="<td>".$group_grade_point."</td>";
+                                            $string.="<td>".$group_grading."</td>";
+                                            $string.="</tr></table></td>";
+                                            $string.="</tr></table></td>";
+                                            $show_id=$subject['subject_groupId'];
+                                            $total+=$group_total;
+                                            $total_point+=$group_grade_point;
+                                            if($group_grade_point==0):
+                                                $fail = 1;
+                                            endif;
+                                            ?>
+                                                
+                                                <?php
+                                        }
+                                         elseif($subject['is_combined']==0){
+                                             //for single subject 
+                                            $subject_total=0;
+                                            $mark_percent=0;
+                                            $subject_term_resultmark=0;
+                                            $subject_term_markpercent=0;
+                                            $subject_term_finalmark=0;
+                                            $subject_grading='';
+                                            $subject_grade_point=0;
+                                          
+                                             $string .= "<td><table class='child-subject content-child-subject' width='100%'><tr>";
+                                             
+                                               foreach ($student_marking_base_exam_type as $marking_base):
+                                                   $string .= "<th>" . $marking_base['exam_type'] . "</th>";
+                                            endforeach;
+                                            $string .= "<th>Total</th><th>GPA</th><th>Grading</th></tr><tr>";
+                                            foreach ($student_marking_base_exam_type as $marking_base) {
+                                                $et = "exam_" . $marking_base['exam_marking_base_id'];
+                                                 if(array_key_exists($subject['subject_id'], $student_mark[$et]))
+                                                 {
+                                                     
+                                                  foreach ($student_mark[$et][$subject['subject_id']] as $student_exam_mark) {
+                                                   
+                                                         if($student_exam_mark['student_id']==$student['studentid'])
+                                                   {
+                                                        $et_exam_marks=0;       
+                                                        $et_got_marks=0;       
+                                                        $et_result_marks=0;       
+                                                        if ($marking_base['is_terminal'] == 0):
+                                                        $string .= "<td>" . number_format($student_exam_mark['got_marks'], 2) . "</td>";
+                                                         $mark_percent+=$student_exam_mark['mark_percent'];
+                                                         $subject_total+=number_format($student_exam_mark['got_marks'], 2);
+                                                         $et_result_marks=number_format($student_exam_mark['got_marks'], 2);
+                                                         $et_exam_marks=number_format($student_exam_mark['exam_marks'], 2);
+                                                         $et_got_marks=number_format($student_exam_mark['exam_got_marks'], 2);
+                                                       else:
+                                                       // $string .= "<td>" . number_format($student_exam_mark['resultmarks'], 2) . "</td>";
+                                                         $mark_percent+=$student_exam_mark['mark_percent'];
+                                                         $subject_term_resultmark=number_format($student_exam_mark['resultmarks'], 2);
+                                                         $subject_term_markpercent=number_format($student_exam_mark['mark_percent'], 2);
+                                                         $subject_term_finalmark=number_format($student_exam_mark['finalmark'], 2);
+                                                         $et_result_marks=number_format($student_exam_mark['resultmarks'], 2);
+                                                         $et_result_marks=number_format($student_exam_mark['resultmarks'], 2);
+                                                         $et_got_marks=number_format($student_exam_mark['exammarks'], 2);
+                                                         $et_exam_marks=number_format($student_exam_mark['finalmark'], 2);
+                                                       endif;
+                                                       
+                                                       ?>
+                                            <input type="hidden" class="mform-data" data-type="exam_marks"  data-student="<?=$student['studentid'] ?>" data-subject="<?=$subject['subject_id']?>" data-etype="<?= $et ?>" value="<?= $et_exam_marks ?>">
+                                            <input type="hidden" class="mform-data" data-type="exam_got_marks"  data-student="<?=$student['studentid'] ?>" data-subject="<?=$subject['subject_id']?>" data-etype="<?= $et ?>" value="<?= $et_got_marks ?>">
+                                            <input type="hidden" class="mform-data" data-type="exam_calculated_marks"  data-student="<?=$student['studentid'] ?>" data-subject="<?=$subject['subject_id']?>" data-etype="<?= $et ?>" value="<?= $et_result_marks ?>">
+                                          
+                                                  <?php }
+                                                    
+                                                   
+                                                }
+                                               }
+                                               else 
+                                               {
+                                                   $string.="<td>N/A</td>";}
+                                              
+                                            }
+                                            if($mark_percent<100)
+                                            {
+                                                   $remain_mark_percent=100-$mark_percent;
+                                                   $new_percent= $subject_term_markpercent+$remain_mark_percent;
+                                                   $subject_term_resultmarks=$new_percent*$subject_term_resultmark/$subject_term_markpercent;
+                                                   $string.="<td>".$subject_term_resultmarks."</td>";
+                                                   $subject_total+=$subject_term_resultmarks;
+                                            }
+                                             else {
+                                                  $string.="<td>".$subject_term_resultmark."</td>";
+                                                  $subject_total+=$subject_term_resultmark;
+                                             }
+                                              foreach ($grade_setup as $grades)
+                                                   {
+                                                       if($subject_term_finalmark<100){
+                                                       if($subject_total*100/$subject_term_finalmark>=$grades['min_mark']&&$subject_total*100/$subject_term_finalmark<=$grades['max_mark'])
+                                                       {
+                                                           $subject_grading=$grades['grading'];
+                                                           $subject_grade_point=$grades['grade_point'];
+                                                       }
+                                                       
+                                                       }
+                                                       else{
+                                                           if($subject_total>=$grades['min_mark']&&$subject_total<=$grades['max_mark'])
+                                                                {
+                                                                $subject_grading=$grades['grading']; 
+                                                                $subject_grade_point=$grades['grade_point'];
+                                                                }
+                                                       }
+                                                   }
+                                            
+                                            $string .= "<td>".$subject_total."</td>";
+                                            $string .= "<td>".$subject_grade_point."</td>";
+                                            $string .= "<td>".$subject_grading."</td>";
+                                            $string .= "</tr></table></td>";
+                                           $total+=$subject_total;
+                                            $total_point+=$subject_grade_point;
+                                            if($subject_grade_point==0):
+                                                $fail = 1;
+                                            endif;
+                                       
+                                            ?>
+                                                 <input type="hidden" class="rform-data" data-type="total" data-student="<?= $student['studentid'] ?>" data-subject="<?= $subject['subject_id'] ?>" value="<?php echo $subject_total; ?>">
+                                                 <input type="hidden" class="rform-data" data-type="grade_point" data-student="<?= $student['studentid'] ?>" data-subject="<?= $subject['subject_id'] ?>" value="<?php echo $subject_grade_point; ?>">
+                                                 <input type="hidden" class="rform-data" data-type="grade" data-student="<?= $student['studentid'] ?>" data-subject="<?= $subject['subject_id'] ?>" value="<?php echo $subject_grading; ?>">
+                                                
+                                                <?php
+                                         }
+                                  //  }
+                            //    }
+                                 
+                            
+                          
+                      //  }
+                      
+            //    }
+
+                //}
+
+            }
+                                                               
+            echo $string;
+
+                
+
+               
+//                                                                                if ($subject['is_combined'] > 0) {
+//                                                                                    foreach ($examm_marks['group'] as $group_exam)
+//                                                                                    {
+//                                                                                       $group_name = $subject['group_name'];
+//                                                                                     if ($show_id != $subject['subject_groupId']) {
+//                                                                                        $string = "";
+//                                                                                        $string .= "<td style='text-align:center>";
+//                                                                                        $string .= "<table class='child-subject' width='100%'><tr>";
+//                                                                                        foreach ($examm_marks['group'] as $group) {
+//                                                                                             if ($student['studentid'] == $exam_marks['student_id'] && $subject['subject_id'] == $group['subject_id']):
+//                                                               
+//                                                                                            $string .= "<td style='text-align:center;'>" . $sub['subject'] . "</td>";
+//                                                                                            endif;
+//                                                                                             
+//                                                                                        }
+//                                                                                        $string .= "</tr></table></td>";
+//                                                                                        echo $string;
+//
+//                                                                                        $show_id = $sub['subject_groupId'];
+//                                                                                    }
+//                                                                                    }
+//                                                                                } else {
+//                                                                                          
+//                                                                                     if ($value['is_terminal'] == 0):
+//                                                                                     echo "<td>" . number_format($exam_marks['got_marks']) . "</td>";
+//                                                                                     endif;
+//                                                                                    
+//                                                                                }
+            
+            ?>
+                                                        <!--<td><?php echo number_format($student['cpresult'], 2); ?></td>-->
+
+                                                        <?php
+                                                        if ($student['optional'] == 1) {
+                                                            echo '(<b>Opt.</b>)';
+                                                        }
+                                                        ?>
+                                                        </td>
+                                                        <?php
+                                                        // $total += number_format($subject['cp'][0]['got_marks'] + $subject['ct'][0]['resultctmarks'] + $subject['terminal'][0]['resultmarks'], 2);
+                                                        //   $grade = $controller->get_grade($student['srclassesID'], number_format($subject['cp'][0]['got_marks'] + $subject['ct'][0]['resultctmarks'] + $subject['terminal'][0]['resultmarks'], 2), $sub);
+//                                                        if ($student['grade'] == 'F')
+//                                                            $fail = true;
+//                                                        //   $total_point +=$grade['gpa'];
+                                                   //     echo '<td>' . number_format($student['totalresult'], 2) . '<br>' . $student['grade'] . '</td>';
+                                                        ?>
+
+<!--                                                    </tr>
+                                                </table>
+                                            </td>-->
+
+                                                        <?php // }    ?>
+                                                                                                                                                                <!--<td>-->
+                                        <input type="hidden" id="subject_<?php echo $student['studentid']; ?>" value="<?php echo $student['subjectid']; ?>">
+                                        <input type="hidden" id="fail_<?php echo $student['studentid']; ?>" value="<?php echo $fail; ?>">
+                                       <!--<input type="hidden" id="studentID_<?php echo $student['studentid']; ?>" value="<?php echo $student['studentid']; ?>">-->
+                                        <!--<input style="width: 50px;" type="text" value="<?php // if (!empty($student['attendance'])) echo $student['attendance'][0]['attendance'];         ?>" required="required" id="attendance_<?php echo $student['studentID']; ?>" name="attandance[<?php echo $student['studentID']; ?>]" class="form-control"></td>-->
+            <?php
+            $prev = $student['studentname'];
+            if ($prev != $student['studentname']) {
+                 
+                ?>
+                                            </tr>
+                                            
+                <?php
+            } ?>
+                                    <input type="hidden" id="total_<?php echo $student['studentid']; ?>" value="<?php echo $total; ?>">
+                                    <input type="hidden" id="total_point_<?php echo $student['studentid']; ?>" value="<?php echo $total_point; ?>">
+                                    <input type="hidden" id="studentID_<?php echo $student['studentid']; ?>" value="<?php echo $student['studentid']; ?>">
+                                    <input type="hidden" id="fail_<?php echo $student['studentid']; ?>" value="<?php echo $fail; ?>">
+                                      
+                                            
+      <?php
+            
+            
+        }
+    }
+    ?>
+                  <?php
+                                
+                            } else {
+                                ?>
+                                <tr>
+                                    <th><?= $this->lang->line('student') ?></th>
+                                    <th>Marks</th>
+                                </tr>
+    <?php foreach ($students as $student) {
+        ?>
+                                    <tr>
+                                        <td><?php echo $student['name']; ?></td>
+                                    <?php foreach ($student['subjects'] as $sub => $subject) { ?>
+                                            <td><?php
+                            echo number_format($subject['ct'][0]['got_marks'], 2);
+                            ?></td>
+        <?php } ?>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </table>
+                    </div>
+                                    <?php if ($exam_type == 'Terminal' && ($terminal_exam_save_status[0]['is_save'] == 0)) { ?>
+                        <input type="button" onclick="save_result(<?php echo $examID; ?>)" class="btn btn-success pull-right" value="Save" >
+                                <?php } ?>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+        </div>    
+    </div>
+</div>
+</div>
+
+<script type="text/javascript">
+    $('.select2').select2();
+    function save_result(exam_id) {
+        var studentArr = new Array();
+        var versionID = $('#versionID').val();
+        var shiftID = $('#shiftID').val();
+        var sectionID = $('#sectionID').val();
+        var classesID = $('#classesID').val();
+        var terminal_exam_id = $('#terminal_exam_id').val();
+        var exam_type_id = $('#exam_type_id').val();
+        var attandanceArr = new Array();
+        var totalArr = new Array();
+        var total_pointArr = new Array();
+        var subjectArr = new Array();
+        var subject_totalArr = new Array();
+        var subject_total_grading_Arr = new Array();
+        var subject_total_grading_point_Arr = new Array();
+
+        var studentgroupID = $('#studentgroupID').val();
+        var failArr = new Array();
+        var studentsInfo = {};
+        var studentsMarksInfo = {};
+        $(".rform-data").each(function (index, el) {
+            var data = $(el).data();
+            var value = $(el).val();
+            console.log(data, value);
+            if(!studentsInfo.hasOwnProperty(data.student))studentsInfo[data.student] = {};
+            if(!studentsInfo[data.student].hasOwnProperty(data.subject))studentsInfo[data.student][data.subject] = {};
+             studentsInfo[data.student][data.subject][data.type] = value;
+        });
+        
+        $(".mform-data").each(function(index,el){
+            var data= $(el).data();
+            var value= $(el).val();
+             console.log(data, value);
+            if(!studentsMarksInfo.hasOwnProperty(data.student))studentsMarksInfo[data.student]={};
+            if(!studentsMarksInfo[data.student].hasOwnProperty(data.subject))studentsMarksInfo[data.student][data.subject]={};
+            if(!studentsMarksInfo[data.student][data.subject].hasOwnProperty(data.etype))studentsMarksInfo[data.student][data.subject][data.etype]={};
+            studentsMarksInfo[data.student][data.subject][data.etype]=value; 
+        });
+        
+        var studentInfo=JSON.stringify(studentsInfo);//for student total exam marks
+        var studentMarkInfo=JSON.stringify(studentsMarksInfo);//for student exam wise marks
+        
+           $("[id*='studentID_']").each(function (row, val) {
+            var ids = $(this).attr('id').split('_');
+            //   var attandance = $(this).val();
+            var student_id = ids[1];
+            var total = $('#total_' + student_id).val();
+            var total_point = $('#total_point_' + student_id).val();
+            var subject = $('#subject_' + student_id).val();
+            var fail = $('#fail_' + student_id).val();
+            studentArr.push(student_id);
+            //  attandanceArr.push(attandance);
+            totalArr.push(total);
+            total_pointArr.push(total_point);
+            subjectArr.push(subject);
+            failArr.push(fail);
+        });
+        $('.loader').show();
+        $.ajax({
+            async: false,
+            type: 'POST',
+            url: "<?= base_url('result/save_result') ?>",
+            data: {'versionID': versionID, 'shiftID': shiftID, 'sectionID': sectionID, 'classesID': classesID, 'terminal_exam_id': terminal_exam_id, 'studentgroupID': studentgroupID, 'exam_type_id': exam_type_id, 'students': studentArr, 'total': totalArr, 'total_point': total_pointArr, 'subjects': subjectArr, 'exam_id': exam_id, 'fail': failArr, 'student_total':studentInfo,'examtype_marks':studentMarkInfo},
+            //data: {'students': studentArr, 'attandance': attandanceArr, 'total': totalArr, 'total_point': total_pointArr, 'subjects': subjectArr, 'exam_id': exam_id, 'fail': failArr},
+            dataType: "text",
+            success: function (msg) {
+                if (msg == 'success') {
+                    toastr["success"]("Result Saved Successfully")
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "500",
+                        "hideDuration": "500",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                } else {
+                    toastr["error"]("Result cannot be saved")
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "500",
+                        "hideDuration": "500",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                }
+                $('.loader').hide();
+            }
+        });
+    }
+    function submit_mark_form(id) {
+        $('#examID').val(id);
+        $('#mark_form').submit();
+    }
+    function search_exam() {
+        $('#exam_list').html('');
+        $('#student_list').html('');
+        var versionID = $('#versionID').val();
+        var shiftID = $('#shiftID').val();
+        var sectionID = $('#sectionID').val();
+        var classesID = $('#classesID').val();
+        var terminal_exam_id = $('#terminal_exam_id').val();
+        var exam_type_id = $('#exam_type_id').val();
+        var subjectID = $('#subjectID').val();
+        var studentgroupID = $('#studentgroupID').val();
+        $('.loader').show();
+        $.ajax({
+            async: false,
+            type: 'POST',
+            url: "<?= base_url('result/fetch_exam_list') ?>",
+            data: {'versionID': versionID, 'shiftID': shiftID, 'sectionID': sectionID, 'classesID': classesID, 'terminal_exam_id': terminal_exam_id, 'exam_type_id': exam_type_id, 'subjectID': subjectID, 'studentgroupID': studentgroupID},
+            dataType: "html",
+            success: function (data) {
+                $('#exam_list').html(data);
+                $('.loader').hide();
+            }
+        });
+    }
+
+    $('#exam_type_id').change(function (event) {
+        if ($(this).find('option:selected').attr('rel') == 1) {
+            $('#subject_container').hide();
+        } else {
+            $('#subject_container').show();
+        }
+    })
+    $('#classesID').change(function (event) {
+        var classesID = $(this).val();
+        if (classesID === '0') {
+            $('#sectionID').val(0);
+            $('#versionID').val(0);
+            $('#shiftID').val(0);
+            $('#studentgroupID').val(0);
+        } else {
+            $('.loader').show();
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: "<?= base_url('student/sectioncall') ?>",
+                data: "id=" + classesID,
+                dataType: "html",
+                success: function (data) {
+                    $('#sectionID').html(data);
+
+                }
+            });
+
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: "<?= base_url('mark/subjectcall') ?>",
+                data: "id=" + classesID,
+                dataType: "html",
+                success: function (data2) {
+                    $('#subjectID').html(data2);
+                    $('.loader').hide();
+                }
+            });
+
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: "<?= base_url('versions/get_version_by_class_id') ?>",
+                data: {'id': classesID},
+                dataType: "html",
+                success: function (data) {
+                    $('#versionID').html(data);
+                    $('.loader').hide();
+                }
+            });
+
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: "<?= base_url('shift/get_shift_by_class_id') ?>",
+                data: {'id': classesID},
+                dataType: "html",
+                success: function (data) {
+                    $('#shiftID').html(data);
+                    $('.loader').hide();
+                }
+            });
+
+            $.ajax({
+                async: false,
+                type: 'POST',
+                url: "<?= base_url('studentgroup/get_groups_by_class_id') ?>",
+                data: {'id': classesID},
+                dataType: "html",
+                success: function (data) {
+                    $('#studentgroupID').html(data);
+                    $('.loader').hide();
+                }
+            });
+        }
+    });
+
+    function printDiv(table) {
+        //Get the HTML of div
+        var divElements = document.getElementById(table).innerHTML;
+        //Get the HTML of whole page
+        var oldPage = document.body.innerHTML;
+
+
+        //Reset the page's HTML with div's HTML only
+        document.body.innerHTML =
+                "<html style='background:#fff !important;'><head><title></title></head><body style='background:#fff !important;'>" +
+                divElements + "</body>";
+
+        //Print Page
+        window.print();
+
+        //Restore orignal HTML
+        document.body.innerHTML = oldPage;
+        location.reload();
+    }
+
+</script>
+<script>
+
+
+    window.onscroll = function () {
+        myFunction()
+    };
+
+    var header = document.getElementById("myHeader");
+    var sticky = header.offsetTop;
+
+    function myFunction() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }
+    
+</script>
+<script type="text/javascript" src="<?php echo base_url('assets/js/jQuery.floatThead.js'); ?>"></script>
+

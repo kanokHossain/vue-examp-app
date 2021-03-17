@@ -1,0 +1,5 @@
+SELECT  ISNULL(SUM(chl.AmountReceivable),0) from li_Challan as chl WHERE  chl.LibraryID='MEH02' and (chl.CreatedDate>= '2017-07-01') AND  
+	 (chl.CreatedDate< '2018-06-30') and Status_D='C'
+
+	 SELECT  ISNULL(SUM(ret.TotalAmount),0) from li_Return as ret WHERE  ret.LibraryID='MEH02' and ret.EntryDate>= '2017-07-01' and ret.EntryDate< '2018-06-30' and Status_D='C'
+	 SELECT  ISNULL(SUM(dep.AmountOfMoney),0) from li_Deposit as dep WHERE  dep.LibraryID ='MEH02'  and dep.MRDate>= '2017-07-01' and  dep.MRDate<'2018-06-30' and Status_D='C'

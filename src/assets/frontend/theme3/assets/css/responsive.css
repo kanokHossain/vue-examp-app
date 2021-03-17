@@ -1,0 +1,454 @@
+/*
+
+Template: Sofbox - Responsive Software Landing Page
+Author: iqonicthemes.in
+Version: 3.0
+Design and Developed by: iqonicthemes.in
+
+NOTE: This file contains the styling for responsive Template.
+
+*/
+
+/*****************
+================================================
+ (  Media Queries  )
+================================================
+ *******************/
+@media(min-width:1601px) {}
+
+@media(max-width:1399px) {}
+
+@media(max-width:1365px) {
+    .covertext {
+        position: absolute;
+        top: 50%;
+        right: 15%;
+        margin: 0 auto;
+    }
+}
+
+@media(max-width:1199px) {
+    .carousel-item {
+        height: auto !important;
+        background-position: center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    .covertext {
+        position: absolute;
+        top: 50%;
+        right: 15%;
+        margin: 0 auto;
+    }
+
+    .title {
+        font-size: 14px;
+        color: #fff;
+        margin-bottom: 0;
+        text-align: right;
+        font-weight: 100;
+    }
+
+    .subtitle {
+        font-size: 28px;
+        color: #fff;
+        font-weight: 400;
+        font-family: monospace;
+    }
+
+    .col-xs-12.explore a button {
+        background: none;
+        border: 1px solid #fff;
+        padding: 4px 17px;
+        border-radius: 25px;
+        text-align: center;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 14px !important;
+    }
+    .frame-section iframe {
+    width: 100%;
+    display: block;
+    margin: auto;
+    height: auto;
+    border: 20px solid #fdb913;
+    border-radius: 40px;
+}
+}
+
+@media (max-width: 991px) {
+    .logo > img {
+        max-width: 100px;
+    }
+
+    .logo .site-title {
+        font-size: 18px;
+    }
+}
+
+@media(max-width:991px) {
+    .menu-container .nav-item:first-of-type .nav-link {
+        padding-left: 21px !important;
+    }
+
+    a.nav-link {
+        border-bottom: 1px solid #bbb6b6;
+    }
+
+    .custom-font-awesome-class {
+        font-size: 1.5em !important;
+        padding-right: 10px;
+    }
+
+    .custom-phone-div .phone-text + h4 {
+        font-size: 1rem;
+    }
+
+    .custom-login {
+        display: none;
+    }
+
+    li.login-nav {
+        display: block;
+    }
+
+    /* theme 3*/
+
+    .carousel-item {
+        height: auto !important;
+        background-position: center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    .covertext {
+    position: absolute;
+    top: 50%;
+    right: 4%;
+    margin: 0 auto;
+}
+
+    .title {
+        font-size: 14px;
+        color: #fff;
+        margin-bottom: 0;
+        text-align: right;
+        font-weight: 100;
+    }
+
+    .subtitle {
+        font-size: 28px;
+        color: #fff;
+        font-weight: 400;
+        font-family: monospace;
+    }
+
+    .col-xs-12.explore a button {
+        background: none;
+        border: 1px solid #fff;
+        padding: 4px 17px;
+        border-radius: 25px;
+        text-align: center;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 14px !important;
+    }
+
+    img.event_image {
+        max-width: 50%;
+        height: auto;
+    }
+
+    .team-text {
+        font-size: 12px;
+        margin-bottom: 0;
+    }
+
+    p.team-text-link {
+        font-size: 10px;
+        margin-bottom: 0;
+    }
+
+    a.event-read-more {
+        padding: 3px 6px;
+        font-size: 10px;
+    }
+
+
+
+    img.teacher-gallery-img {
+        width: 50%;
+    }
+
+    p.custom-teacher-name {
+        font-size: 10px;
+    }
+
+    p.custom-teacher-designation {
+        font-size: 7px;
+    }
+
+}
+
+
+
+@media(max-width:767px) {
+
+    /*----------------
+	Section padding 
+	----------------*/
+    .notice-area {
+        position: relative;
+    }
+
+    .important-link-area {
+        position: relative;
+    }
+
+    .featured-image .my-img {
+        height: auto;
+    }
+
+    .nav-pills .nav-link.active,
+    .nav-pills .show > .nav-link {
+        font-size: 16px;
+    }
+
+    .event-link-text {
+        font-size: 16px;
+    }
+
+    .carousel-item {
+        height: auto !important;
+        background-position: center;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    .covertext {
+        position: absolute;
+        top: 90px;
+        right: 4%;
+        margin: 0 auto;
+    }
+
+    .title {
+        font-size: 14px;
+        color: #fff;
+        margin-bottom: 0;
+        text-align: right;
+        font-weight: 100;
+    }
+
+    .subtitle {
+        font-size: 28px;
+        color: #fff;
+        font-weight: 400;
+        font-family: monospace;
+    }
+
+    .col-xs-12.explore a button {
+        background: none;
+        border: 1px solid #fff;
+        padding: 4px 17px;
+        border-radius: 25px;
+        text-align: center;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 14px !important;
+    }
+
+    h3.site-title {
+        font-size: 20px;
+    }
+
+    img.header-logo {
+        width: 60px;
+        height: 60px;
+        display: block;
+        margin-right: 15px;
+    }
+
+    .footer-top-content {
+        background-color: #008c99;
+        color: #ffffff;
+        text-align: center;
+        font-size: 35px;
+        padding: 20px 0px;
+    }
+
+    .footer-top-bottom-content {
+        background-color: #008491;
+        text-align: center;
+        padding: 20px 0px;
+    }
+
+    .paint-slider .regular.slider .slick-next {
+        right: -44px;
+    }
+
+    .paint-slider .regular.slider .slick-prev {
+        left: -55px;
+    }
+
+    img.event_image {
+        max-width: 50%;
+        height: auto;
+    }
+
+    .team-text {
+        font-size: 12px;
+        margin-bottom: 0;
+    }
+
+    p.team-text-link {
+        font-size: 10px;
+        margin-bottom: 0;
+    }
+
+    a.event-read-more {
+        padding: 3px 6px;
+        font-size: 10px;
+    }
+
+
+
+    img.teacher-gallery-img {
+        width: 50%;
+    }
+
+    p.custom-teacher-name {
+        font-size: 10px;
+    }
+
+    p.custom-teacher-designation {
+        font-size: 7px;
+    }
+}
+
+@media(max-width:500px) {
+    h3.site-title {
+        font-size: 20px;
+    }
+
+    img.header-logo {
+        width: 60px;
+        height: 60px;
+        display: block;
+        margin-right: 15px;
+    }
+
+    .col-xs-12.explore a button {
+        background: none;
+        border: 1px solid #fff;
+        padding: 4px 10px;
+        border-radius: 10px;
+        text-align: center;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 10px !important;
+        display: block;
+        margin-right: 16px;
+    }
+
+    .subtitle {
+        font-size: 20px;
+        color: #fff;
+        font-weight: 400;
+        font-family: monospace;
+    }
+
+    .title {
+        font-size: 12px;
+        color: #fff;
+        margin-bottom: 0;
+        text-align: right;
+        font-weight: 100;
+    }
+
+    .footer-top-content {
+        background-color: #008c99;
+        color: #ffffff;
+        text-align: center;
+        font-size: 35px;
+        padding: 20px 0px;
+    }
+
+    .footer-top-bottom-content {
+        background-color: #008491;
+        text-align: center;
+        padding: 20px 0px;
+    }
+
+    .paint-slider .regular.slider .slick-next {
+        display: none !important;
+    }
+
+    .paint-slider .regular.slider .slick-prev {
+        display: none !important;
+    }
+
+
+
+
+}
+
+@media(max-width:360px) {
+
+    /* theme3*/
+    .card-body {
+        -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 0.25rem;
+    }
+
+    .col-xs-12.explore a button {
+        background: none;
+        border: 1px solid #fff;
+        padding: 5px 8px;
+        border-radius: 25px;
+        text-align: center;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 10px !important;
+    }
+
+    .subtitle {
+        font-size: 16px;
+        color: #fff;
+        font-weight: 400;
+        font-family: monospace;
+    }
+
+    .title {
+        font-size: 10px;
+        color: #fff;
+        margin-bottom: 0;
+        text-align: right;
+        font-weight: 100;
+    }
+
+    .covertext {
+        position: absolute;
+        top: 76px;
+        right: 4%;
+        margin: 0 auto;
+    }
+
+    .footer-top-content {
+        background-color: #008c99;
+        color: #ffffff;
+        text-align: center;
+        font-size: 35px;
+        padding: 20px 0px;
+    }
+
+    .footer-top-bottom-content {
+        background-color: #008491;
+        text-align: center;
+        padding: 20px 0px;
+    }
+
+}
